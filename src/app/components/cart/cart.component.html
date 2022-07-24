@@ -1,0 +1,91 @@
+<div class="m-5 p-5 row cart-container">
+    <div class="col-6">
+        <div *ngFor="let product of products">
+            <div class="cart-item">
+                <img src="{{ product.url }}" alt="{{ product.name }}" routerLink="/product/{{product.id}}" />
+            
+                <div class="cart-item-details">
+                    <h3>{{product.name}}</h3>
+                    <p>{{product.price | currency}}</p>
+                    <div>
+                        <span>Amount: </span>
+                        <input type="number" class="number-input form-control" [(ngModel)]="product.amount" (change)="handleAmountChange(product)" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h2>Total Price: {{totalPrice | currency}}</h2>
+    </div>
+
+    <div class="col-6">
+        <form #form="ngForm" (ngSubmit)="submit(user)" class="form-margin form">
+
+            <!-- <label class="mt-3" for="name">Full Name</label>
+            <input type="text" placeholder="(min 3 characters)" class="form-control" name="name" id="name" [(ngModel)]="user.name" /> -->
+
+            <div class="mb-3">
+                <label for="name" class="form-label">Full Name</label>
+                <input type="text"
+                  [ngStyle]="{'border-color' : name.invalid && (name.dirty || name.touched) ? 'tomato':'#ced4da'}"
+                  class="form-control" name="name" required minlength="5" maxlength="40" [(ngModel)]="user.name"
+                  #name="ngModel">
+                <div *ngIf="name.invalid && (name.dirty || name.touched)">
+                  <div *ngIf="name.errors?.['required']" class="form-text text-danger">
+                    Please Enter Your Full Name
+                  </div>
+                  <div *ngIf="name.errors?.['minlength']" class="form-text text-danger">
+                    Please Enter from 5 to 40 character
+                  </div>
+                </div>
+            </div>
+
+            <!-- <label class="mt-3" for="address">Address</label>
+            <input type="text" placeholder="(min 6 characters)" class="form-control" name="address" id="address" [(ngModel)]="user.address" /> -->
+        
+            <div class="mb-3">
+              <label for="address" class="form-label">Address</label>
+              <input type="text"
+                [ngStyle]="{'border-color' : address.invalid && (address.dirty || address.touched) ? 'tomato':'#ced4da'}"
+                class="form-control" name="address" required minlength="6" maxlength="200" [(ngModel)]="user.address"
+                #address="ngModel">
+              <div *ngIf="address.invalid && (address.dirty || address.touched)">
+                <div *ngIf="address.errors?.['required']" class="form-text text-danger">
+                  Please Enter Your Address
+                </div>
+                <div *ngIf="address.errors?.['minlength']" class="form-text text-danger">
+                  Please Enter from 5 to 200 character
+                </div>
+              </div>
+            </div>
+
+            <!-- <label class="mt-3" for="credit">Credit Card</label>
+            <input type="number" placeholder="(16-digits number)" class="form-control" name="credit" id="credit" [(ngModel)]="user.credit" /> -->
+        
+            <div class="mb-3">
+              <label for="credit" class="form-label">Credit Card Number</label>
+                <input type="text"
+                required
+                minlength="16"
+                maxlength="16"
+                (ngModelChange)="validateCreditNumber($event)"
+                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
+                [ngStyle]="{'border-color' : credit.invalid && (credit.dirty || credit.touched) ? 'tomato':'#ced4da'}"
+                class="form-control" name="credit" [(ngModel)]="user.credit"
+                #credit="ngModel"
+                >
+              <div *ngIf="credit.invalid && (credit.dirty || credit.touched)">
+                <div *ngIf="credit.errors?.['required']" class="form-text text-danger">
+                  Please Enter Your Credit Card Number
+                </div>
+                <div *ngIf="credit.errors?.['minlength'] || credit.errors?.['maxlength']" class="form-text text-danger">
+                  Please Enter 16 digits
+                </div>
+              </div>
+            </div>
+
+            
+            <p>We'll never share your payment details with anyone else!</p>
+            <input type="submit" class="btn w-100 btn-success" [disabled]="form.invalid || totalPrice <= 0" value="Submit" />
+        </form>
+    </div>
+</div>

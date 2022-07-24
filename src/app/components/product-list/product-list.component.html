@@ -1,0 +1,7 @@
+<div class="container">
+    <div class="row space">
+        <div class="col m-4" *ngFor="let product of productList">
+            <app-product-item [product]="product" (selectProduct)="selectProduct()"></app-product-item>
+        </div>
+    </div>
+</div>
